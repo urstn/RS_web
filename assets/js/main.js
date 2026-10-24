@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  /* Al recargar, la página siempre vuelve al inicio (aunque la URL tenga #contacto) */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  window.addEventListener('load', function () { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); });
+
   var doc = document.documentElement;
   doc.classList.add('js');
   var reduce = false; // las animaciones se muestran siempre
@@ -19,10 +26,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
 
   /* ---------- Parallax + barra de proceso (un solo bucle) ---------- */
-  var heroImg = document.getElementById('heroImg');
-  var hero = document.querySelector('.hero');
-  var heroContent = document.querySelector('.hero__content');
-  var bandImgs = [].slice.call(document.querySelectorAll('.band__img'));
+  var parallaxImgs = [].slice.call(document.querySelectorAll('img[data-speed]'));
   var steps = document.getElementById('steps');
   var stepItems = steps ? [].slice.call(steps.querySelectorAll('.step')) : [];
   var ticking = false;
@@ -34,23 +38,13 @@
 
     nav.classList.toggle('is-solid', y > 40);
 
-    if (!reduce) {
-      // Hero: la barcaza avanza hacia la izquierda y el agua se desplaza más lento
-      if (heroImg && y < hero.offsetHeight + 100) {
-        heroImg.style.transform =
-          'translate3d(' + (y * -0.16 * soft).toFixed(1) + 'px,' + (y * 0.14 * soft).toFixed(1) + 'px,0) scale(1.07)';
-        // El texto sube un poco más rápido y se desvanece: refuerza la sensación de capas
-        heroContent.style.transform = 'translate3d(0,' + (y * -0.1).toFixed(1) + 'px,0)';
-        heroContent.style.opacity = Math.max(0, 1 - y / (hero.offsetHeight * 0.85)).toFixed(2);
-      }
-      // Banda: imagen más lenta que el contenido
-      bandImgs.forEach(function (img) {
-        var r = img.parentNode.getBoundingClientRect();
-        if (r.bottom < -100 || r.top > vh + 100) return;
-        var offset = (r.top + r.height / 2 - vh / 2) * -(parseFloat(img.dataset.speed) || 0.15);
-        img.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
-      });
-    }
+    // Parallax: cada imagen se desplaza más lento que el contenido (portada, banda y "Nosotros")
+    parallaxImgs.forEach(function (img) {
+      var r = img.parentNode.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      var offset = (r.top + r.height / 2 - vh / 2) * -(parseFloat(img.dataset.speed) || 0.15) * soft;
+      img.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+    });
 
     // Proceso: la línea avanza con el scroll
     if (steps) {
@@ -94,6 +88,70 @@
     rows.classList.add('is-in');
   }
 
+  /* ---------- Carrusel: de derecha a izquierda, en bucle ----------
+     Repite las fotos hasta cubrir la pantalla y las duplica para que el bucle no tenga cortes.
+     El movimiento se hace en píxeles ENTEROS de pantalla y a un ritmo constante de cuadros
+     (según la frecuencia del monitor), para evitar el temblor del movimiento subpíxel. */
+  var track = document.getElementById('galleryTrack');
+  if (track) {
+    var gallery = track.parentNode;
+    var base = [].slice.call(track.children);
+    var lastW = 0, halfCss = 0, pos = 0, paused = false, visible = true;
+    var dpr = window.devicePixelRatio || 1;
+
+    var buildGallery = function () {
+      var w = window.innerWidth;
+      if (w === lastW) return;
+      lastW = w;
+      [].slice.call(track.querySelectorAll('[data-clone]')).forEach(function (n) { track.removeChild(n); });
+      var cs = getComputedStyle(base[0]);
+      var itemW = Math.round(base[0].offsetWidth + parseFloat(cs.marginRight));
+      if (!itemW) return;
+      var setW = itemW * base.length;
+      var k = Math.max(1, Math.ceil(w / setW));
+      for (var s = 1; s < 2 * k; s++) {
+        base.forEach(function (el) {
+          var c = el.cloneNode(true);
+          c.setAttribute('data-clone', ''); c.setAttribute('aria-hidden', 'true');
+          c.querySelector('img').alt = '';
+          track.appendChild(c);
+        });
+      }
+      halfCss = k * setW;
+    };
+    buildGallery();
+    window.addEventListener('resize', function () { dpr = window.devicePixelRatio || 1; buildGallery(); });
+    gallery.addEventListener('mouseenter', function () { paused = true; });
+    gallery.addEventListener('mouseleave', function () { paused = false; });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { rootMargin: '100px' }).observe(gallery);
+    }
+
+    // 1) medir la frecuencia real del monitor; 2) mover siempre 1 o más píxeles enteros cada N cuadros
+    var stamps = [];
+    function measure(t) {
+      stamps.push(t);
+      if (stamps.length < 32) { requestAnimationFrame(measure); return; }
+      var d = [];
+      for (var i = 2; i < stamps.length; i++) d.push(stamps[i] - stamps[i - 1]);
+      d.sort(function (a, b) { return a - b; });
+      var hz = 1000 / d[Math.floor(d.length / 2)];
+      var every = Math.max(1, Math.round(hz / 60));                      // 60 Hz → cada cuadro; 120/144 Hz → cada 2
+      var step = Math.max(1, Math.round(55 * dpr * every / hz));          // ≈ 55 px de pantalla por segundo
+      var frame = 0;
+      (function loop() {
+        if (!paused && visible && ++frame % every === 0) {
+          pos += step;
+          var halfDev = Math.round(halfCss * dpr);
+          if (pos >= halfDev) pos -= halfDev;
+          track.style.transform = 'translate3d(' + (-pos / dpr) + 'px,0,0)';
+        }
+        requestAnimationFrame(loop);
+      })();
+    }
+    requestAnimationFrame(measure);
+  }
+
   /* ---------- Subtítulo con efecto máquina de escribir ---------- */
   var tw = document.getElementById('typewrite');
   if (tw) {
@@ -120,34 +178,42 @@
   var MAIL = 'rsconsultora.gestion@gmail.com';
   var form = document.getElementById('form');
   var note = document.getElementById('formNote');
-  var product = form.elements['producto'];
+  var nombre = form.elements['nombre'];
+  var mensaje = form.elements['respuesta'];
 
-  // Los enlaces "Cotizar..." precargan el producto
+  // Los enlaces "Cotizar..." precargan el producto en el mensaje
   document.querySelectorAll('.row__link').forEach(function (a) {
     a.addEventListener('click', function () {
       var t = a.getAttribute('data-topic');
-      if (t && !product.value.trim()) product.value = t + ': ';
+      if (t && !mensaje.value.trim()) mensaje.value = 'Quisiera cotizar: ' + t + '. ';
     });
   });
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var nombre = form.elements['nombre'];
-    var tel = form.elements['telefono'];
-    var fields = [nombre, product];
+    var fields = [nombre, mensaje];
     var bad = fields.filter(function (f) { return !f.value.trim(); });
     fields.forEach(function (f) { f.classList.toggle('is-invalid', !f.value.trim()); });
     note.classList.remove('is-ok');
     if (bad.length) {
-      note.textContent = 'Completá tu nombre y qué querés importar para continuar.';
+      note.textContent = 'Completá tu nombre y tu mensaje para continuar.';
       bad[0].focus();
       return;
     }
-    var body = 'Hola, soy ' + nombre.value.trim() + '.\n\nQuisiera cotizar una importación:\n' + product.value.trim() +
-      (tel.value.trim() ? '\n\nMi teléfono: ' + tel.value.trim() : '') + '\n\nSaludos.';
     var subject = 'Consulta de importación - ' + nombre.value.trim();
+    var body = 'Hola, soy ' + nombre.value.trim() + '.\n\n' + mensaje.value.trim() + '\n\nSaludos.';
+    var q = 'subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
+    // Mensaje de confirmación con alternativa por si no hay programa de correo instalado
     note.classList.add('is-ok');
-    note.textContent = 'Se abrió tu programa de correo. Si no se abrió, escribinos a ' + MAIL + '.';
-    window.location.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    note.textContent = 'Se abrió tu programa de correo. ¿No se abrió? ';
+    var gmail = document.createElement('a');
+    gmail.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(MAIL) + '&' + q;
+    gmail.target = '_blank'; gmail.rel = 'noopener noreferrer';
+    gmail.textContent = 'Abrir en Gmail';
+    note.appendChild(gmail);
+    note.appendChild(document.createTextNode(' o escribinos a ' + MAIL + '.'));
+
+    window.location.href = 'mailto:' + MAIL + '?' + q;
   });
 })();

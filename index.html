@@ -41,7 +41,7 @@
   <!-- HERO -->
   <section class="hero" id="inicio">
     <div class="hero__media" aria-hidden="true">
-      <img class="hero__img" id="heroImg" src="assets/images/hero-barcaza.jpg" alt="" fetchpriority="high">
+      <img class="hero__img" id="heroImg" data-speed="0.18" src="assets/images/banda-bodega.jpg" alt="" fetchpriority="high">
       <div class="hero__scrim"></div>
     </div>
     <div class="wrap hero__content">
@@ -75,66 +75,88 @@
       </div>
 
       <ul class="rows" id="rows">
-        <li class="row is-open">
+        <li class="row">
           <h3 class="row__title">
-            <button class="row__btn" aria-expanded="true" aria-controls="p1" id="b1">
-              <span>Drones para el campo</span><i aria-hidden="true"></i>
+            <button class="row__btn" aria-expanded="false" aria-controls="p1" id="b1">
+              <span>Materiales y materias primas</span><i aria-hidden="true"></i>
             </button>
           </h3>
           <div class="row__panel" id="p1" role="region" aria-labelledby="b1">
             <div>
-              <p>Drones de pulverización, mapeo y monitoreo de cultivos. Tecnología para producir más y mejor, con asesoramiento en la elección del equipo.</p>
-              <a class="row__link" href="#contacto" data-topic="Drones para el campo">Cotizar drones</a>
+              <p>Insumos para producir, en el volumen que necesitás y con precios de origen.</p>
+              <a class="row__link" href="#contacto" data-topic="Materiales y materias primas">Cotizar materiales</a>
             </div>
           </div>
         </li>
         <li class="row">
           <h3 class="row__title">
             <button class="row__btn" aria-expanded="false" aria-controls="p2" id="b2">
-              <span>Maquinaria pesada</span><i aria-hidden="true"></i>
+              <span>Energía y generación</span><i aria-hidden="true"></i>
             </button>
           </h3>
           <div class="row__panel" id="p2" role="region" aria-labelledby="b2">
             <div>
-              <p>Equipos para empresas de construcción, industria y agro. Nos ocupamos de la compra, el traslado y la documentación hasta que la máquina llega a destino.</p>
-              <a class="row__link" href="#contacto" data-topic="Maquinaria pesada">Cotizar maquinaria</a>
+              <p>Generadores, paneles solares e inversores para tener energía propia en el campo o en la empresa.</p>
+              <a class="row__link" href="#contacto" data-topic="Energía y generación">Cotizar equipos de energía</a>
             </div>
           </div>
         </li>
         <li class="row">
           <h3 class="row__title">
             <button class="row__btn" aria-expanded="false" aria-controls="p3" id="b3">
-              <span>Insumos en general</span><i aria-hidden="true"></i>
+              <span>Iluminación y electricidad</span><i aria-hidden="true"></i>
             </button>
           </h3>
           <div class="row__panel" id="p3" role="region" aria-labelledby="b3">
             <div>
-              <p>Repuestos, materiales y suministros para tu actividad, en el volumen que necesites y con precios competitivos.</p>
-              <a class="row__link" href="#contacto" data-topic="Insumos en general">Cotizar insumos</a>
+              <p>Luminarias, cables y material eléctrico para obras, galpones e instalaciones.</p>
+              <a class="row__link" href="#contacto" data-topic="Iluminación y electricidad">Cotizar iluminación</a>
             </div>
           </div>
         </li>
         <li class="row">
           <h3 class="row__title">
             <button class="row__btn" aria-expanded="false" aria-controls="p4" id="b4">
-              <span>Otros productos</span><i aria-hidden="true"></i>
+              <span>Mercadería para reventa</span><i aria-hidden="true"></i>
             </button>
           </h3>
           <div class="row__panel" id="p4" role="region" aria-labelledby="b4">
             <div>
-              <p>Si no figura en la lista, probablemente también lo podamos traer. Contanos qué buscás y lo cotizamos.</p>
-              <a class="row__link" href="#contacto" data-topic="Otro producto">Consultar un producto</a>
+              <p>Productos para comercios y distribuidores, en lotes que se ajustan a tu volumen de ventas.</p>
+              <a class="row__link" href="#contacto" data-topic="Mercadería para reventa">Cotizar mercadería</a>
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <h3 class="row__title">
+            <button class="row__btn" aria-expanded="false" aria-controls="p5" id="b5">
+              <span>Embalaje y logística</span><i aria-hidden="true"></i>
+            </button>
+          </h3>
+          <div class="row__panel" id="p5" role="region" aria-labelledby="b5">
+            <div>
+              <p>Cajas, film, pallets y equipamiento para almacenes y depósitos.</p>
+              <a class="row__link" href="#contacto" data-topic="Embalaje y logística">Cotizar embalaje</a>
             </div>
           </div>
         </li>
       </ul>
+    </div>
+
+    <div class="gallery" aria-label="Algunos de los productos que importamos">
+      <div class="gallery__track" id="galleryTrack">
+        <figure class="gallery__item"><img src="assets/images/galeria-1.jpg" alt="Bisagras para muebles dentro de su caja" width="600" height="800"></figure>
+        <figure class="gallery__item"><img src="assets/images/galeria-2.jpg" alt="Guías de cajón de doble pared" width="600" height="800"></figure>
+        <figure class="gallery__item"><img src="assets/images/galeria-3.jpg" alt="Bisagras de acero en caja de 400 unidades" width="600" height="800"></figure>
+        <figure class="gallery__item"><img src="assets/images/galeria-4.jpg" alt="Herrajes de acero para cocina" width="600" height="800"></figure>
+      </div>
     </div>
   </section>
 
   <!-- BANDA PARALLAX -->
   <section class="band" id="ventajas">
     <div class="band__media" aria-hidden="true">
-      <img class="band__img" data-speed="0.18" src="assets/images/puerto.jpg" alt="" loading="lazy">
+      <img class="band__img" data-speed="0.18" src="assets/images/hero-portada.jpg" alt="" loading="lazy">
       <div class="band__scrim"></div>
     </div>
     <div class="wrap band__content">
@@ -183,7 +205,11 @@
   </section>
 
   <!-- NOSOTROS -->
-  <section class="section section--dark" id="nosotros">
+  <section class="section section--dark about-section" id="nosotros">
+    <div class="about-section__media" aria-hidden="true">
+      <img class="about-section__img" data-speed="0.12" src="assets/images/cajas.jpg" alt="" loading="lazy">
+      <div class="about-section__scrim"></div>
+    </div>
     <div class="wrap about">
       <h2 class="h2">Importar no tiene por qué ser complicado.</h2>
       <div class="about__text">
@@ -215,7 +241,7 @@
             </label>
             <label>
               <span>Tu mensaje</span>
-              <textarea name="respuesta" rows="3"></textarea>
+              <textarea name="respuesta" rows="4" required></textarea>
             </label>
             <button type="submit" class="btn btn--dark">Enviar por email</button>
             <p class="form__note" id="formNote" role="status" aria-live="polite"></p>
@@ -240,8 +266,8 @@
     <p class="footer__copy">© 2026 RS Consultora. Todos los derechos reservados.</p>
     <div class="social">
       <!-- Reemplazá los "#" por tus perfiles reales -->
-      <a href="https://www.instagram.com/rs.consultora?psln=NXJqYjN1eGZ4MnZh" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></svg></a>
-      <a href="https://www.facebook.com/profile.php?id=61595702254246" aria-label="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
+      <a href="https://www.instagram.com/rs.consultora?psln=NXJqYjN1eGZ4MnZh" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></svg></a>
+      <a href="https://www.facebook.com/profile.php?id=61595702254246" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
       <a href="mailto:rsconsultora.gestion@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
     </div>
   </div>
