@@ -27,14 +27,16 @@
 
   /* ---------- Parallax + barra de proceso (un solo bucle) ---------- */
   var parallaxImgs = [].slice.call(document.querySelectorAll('img[data-speed]'));
-  var steps = document.getElementById('steps');
-  var stepItems = steps ? [].slice.call(steps.querySelectorAll('.step')) : [];
   var ticking = false;
+  // Altura de referencia estable: en el celular, window.innerHeight cambia cuando el navegador oculta
+  // o muestra su barra, y eso hacía "saltar" las imágenes con parallax. Solo se actualiza si cambia el ANCHO
+  // (por ejemplo, al girar el teléfono).
+  var vhRef = window.innerHeight, wRef = window.innerWidth;
 
   function update() {
     ticking = false;
     var y = window.pageYOffset;
-    var vh = window.innerHeight;
+    var vh = vhRef;
 
     nav.classList.toggle('is-solid', y > 40);
 
@@ -46,23 +48,58 @@
       img.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
     });
 
-    // Proceso: la línea avanza con el scroll
-    if (steps) {
-      var s = steps.getBoundingClientRect();
-      var start = vh * 0.8;
-      var p = (start - s.top) / (s.height + vh * 0.1);
-      p = Math.max(0, Math.min(1, p));
-      steps.style.setProperty('--p', p.toFixed(3));
-      stepItems.forEach(function (el, i) {
-        var threshold = i / (stepItems.length - 1) * 0.92;
-        el.classList.toggle('is-on', p >= threshold && p > 0);
-      });
-    }
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', function () {
+    if (window.innerWidth !== wRef) { wRef = window.innerWidth; vhRef = window.innerHeight; }
+    onScroll();
+  });
   update();
+
+  /* ---------- Proceso: la línea se dibuja y los pasos se encienden uno a uno ----------
+     Arranca una sola vez, cuando la sección ya subió un poco en la pantalla (así se ve completa). */
+  var steps = document.getElementById('steps');
+  if (steps) {
+    var stepItems = [].slice.call(steps.querySelectorAll('.step'));
+    var horizontal = function () { return getComputedStyle(steps).gridTemplateColumns.split(' ').length > 1; };
+    var measure = function () {
+      var box = steps.getBoundingClientRect();
+      var vert = !horizontal();
+      var centers = stepItems.map(function (s) {
+        var r = s.getBoundingClientRect();
+        return vert ? r.top - box.top + 18 : r.left - box.left + r.width / 2;   // centro del círculo
+      });
+      // En celular la línea es vertical y termina en el centro del último círculo
+      if (vert) steps.style.setProperty('--line', centers[centers.length - 1] + 'px');
+      else steps.style.removeProperty('--line');
+      return centers;
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+    var runSteps = function () {
+      var DUR = 3000;                                     // ms que tarda la línea en recorrer todo
+      var centers = measure();
+      var last = centers[centers.length - 1];
+      var first = horizontal() ? centers[0] : 0;                // la línea horizontal arranca en el círculo 1
+      steps.style.setProperty('--d', (DUR / 1000) + 's');
+      steps.classList.add('is-run');
+      stepItems.forEach(function (s, i) {
+        setTimeout(function () { s.classList.add('is-on'); }, 250 + DUR * ((centers[i] - first) / (last - first)) * (i === 0 ? 0 : 1));
+      });
+    };
+    if ('IntersectionObserver' in window) {
+      var sio = new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { sio.disconnect(); runSteps(); }
+      }, { rootMargin: '0px 0px -35% 0px', threshold: 0 });
+      sio.observe(steps);
+    } else {
+      stepItems.forEach(function (s) { s.classList.add('is-on'); });
+      steps.classList.add('is-run');
+    }
+  }
 
   /* ---------- Filas desplegables ---------- */
   var rows = document.getElementById('rows');
