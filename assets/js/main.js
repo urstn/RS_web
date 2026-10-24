@@ -27,6 +27,11 @@
 
   /* ---------- Parallax + barra de proceso (un solo bucle) ---------- */
   var parallaxImgs = [].slice.call(document.querySelectorAll('img[data-speed]'));
+  // Si el navegador sabe hacer parallax por sí mismo (CSS), JavaScript no interviene.
+  // Sin ese soporte: respaldo por JS solo en computadora; en pantallas táctiles las imágenes quedan fijas (sin saltos).
+  var nativeParallax = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: view()'));
+  var touchOnly = window.matchMedia('(pointer: coarse)').matches;
+  var useJsParallax = !nativeParallax && !touchOnly;
   var ticking = false;
   // Altura de referencia estable: en el celular, window.innerHeight cambia cuando el navegador oculta
   // o muestra su barra, y eso hacía "saltar" las imágenes con parallax. Solo se actualiza si cambia el ANCHO
@@ -41,7 +46,7 @@
     nav.classList.toggle('is-solid', y > 40);
 
     // Parallax: cada imagen se desplaza más lento que el contenido (portada, banda y "Nosotros")
-    parallaxImgs.forEach(function (img) {
+    if (useJsParallax) parallaxImgs.forEach(function (img) {
       var r = img.parentNode.getBoundingClientRect();
       if (r.bottom < -100 || r.top > vh + 100) return;
       var offset = (r.top + r.height / 2 - vh / 2) * -(parseFloat(img.dataset.speed) || 0.15) * soft;
@@ -133,7 +138,7 @@
   if (track) {
     var gallery = track.parentNode;
     var base = [].slice.call(track.children);
-    var lastW = 0, halfCss = 0, pos = 0, paused = false, visible = true;
+    var lastW = 0, halfCss = 0, pos = 0;
     var dpr = window.devicePixelRatio || 1;
 
     var buildGallery = function () {
@@ -158,11 +163,6 @@
     };
     buildGallery();
     window.addEventListener('resize', function () { dpr = window.devicePixelRatio || 1; buildGallery(); });
-    gallery.addEventListener('mouseenter', function () { paused = true; });
-    gallery.addEventListener('mouseleave', function () { paused = false; });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { rootMargin: '100px' }).observe(gallery);
-    }
 
     // 1) medir la frecuencia real del monitor; 2) mover siempre 1 o más píxeles enteros cada N cuadros
     var stamps = [];
@@ -175,16 +175,17 @@
       var hz = 1000 / d[Math.floor(d.length / 2)];
       var every = Math.max(1, Math.round(hz / 60));                      // 60 Hz → cada cuadro; 120/144 Hz → cada 2
       var step = Math.max(1, Math.round(55 * dpr * every / hz));          // ≈ 55 px de pantalla por segundo
-      var frame = 0;
-      (function loop() {
-        if (!paused && visible && ++frame % every === 0) {
-          pos += step;
-          var halfDev = Math.round(halfCss * dpr);
-          if (pos >= halfDev) pos -= halfDev;
-          track.style.transform = 'translate3d(' + (-pos / dpr) + 'px,0,0)';
-        }
+      var period = 1000 / hz, acc = 0, lastT = stamps[stamps.length - 1];
+      (function loop(now) {
+        // Si el navegador se atrasa (tarea pesada, scroll), se recuperan los cuadros perdidos: nunca se frena
+        var frames = Math.min(12, Math.max(1, Math.round((now - lastT) / period)));
+        lastT = now; acc += frames;
+        while (acc >= every) { acc -= every; pos += step; }
+        var halfDev = Math.round(halfCss * dpr);
+        if (pos >= halfDev) pos -= halfDev;
+        track.style.transform = 'translate3d(' + (-pos / dpr) + 'px,0,0)';
         requestAnimationFrame(loop);
-      })();
+      })(lastT);
     }
     requestAnimationFrame(measure);
   }
