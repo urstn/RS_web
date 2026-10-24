@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RS Consultora | Importaciones</title>
+  <meta name="description" content="Consultora especializada en importaciones para Argentina. Drones para el campo, maquinaria pesada e insumos en general, al mejor precio y con atención personalizada.">
+  <meta name="theme-color" content="#251d29">
+  <link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/images/favicon.png" sizes="256x256" type="image/png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="#inicio" aria-label="RS Consultora, ir al inicio">
+      <img class="brand__logo" src="assets/images/logo-claro.png" alt="" width="45" height="52">
+      <span class="brand__name">RS Consultora</span>
+    </a>
+
+    <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Abrir menú">
+      <span></span><span></span>
+    </button>
+
+    <nav class="nav__menu" id="navMenu" aria-label="Principal">
+      <a href="#importamos">Qué importamos</a>
+      <a href="#proceso">Cómo trabajamos</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto" class="nav__cta">Contactanos</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero__media" aria-hidden="true">
+      <img class="hero__img" id="heroImg" src="assets/images/hero-barcaza.jpg" alt="" fetchpriority="high">
+      <div class="hero__scrim"></div>
+    </div>
+    <div class="wrap hero__content">
+      <h1 class="hero__title">
+        <span class="line"><span>Simplificamos tus importaciones,</span></span>
+        <span class="line"><span>potenciamos tu negocio.</span></span>
+      </h1>
+      <div class="hero__foot">
+        <div class="hero__copy">
+          <p class="hero__rotor">
+            <span>Importamos</span>
+            <span class="typewrite" id="typewrite" aria-hidden="true" data-period="1800" data-type='["insumos","drones para el campo","maquinaria pesada","repuestos","equipos industriales","tecnología agrícola","herramientas","materiales","lo que tu negocio necesita"]'><span class="tw-text">insumos</span></span>
+            <span class="sr-only">insumos, drones, maquinaria y más</span>
+          </p>
+          <p class="hero__lead">Consultora especializada en importaciones para Argentina. Al mejor precio y con atención personalizada.</p>
+        </div>
+        <div class="hero__actions">
+          <a class="btn btn--light" href="#contacto">Pedir cotización</a>
+          <a class="btn btn--ghost" href="#importamos">Qué importamos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ IMPORTAMOS -->
+  <section class="section section--light" id="importamos">
+    <div class="wrap split">
+      <div class="split__head">
+        <h2 class="h2">Traemos lo que tu operación necesita.</h2>
+        <p class="muted">Del campo a la industria, buscamos el producto, comparamos proveedores y lo dejamos en tu puerta.</p>
+      </div>
+
+      <ul class="rows" id="rows">
+        <li class="row is-open">
+          <h3 class="row__title">
+            <button class="row__btn" aria-expanded="true" aria-controls="p1" id="b1">
+              <span>Drones para el campo</span><i aria-hidden="true"></i>
+            </button>
+          </h3>
+          <div class="row__panel" id="p1" role="region" aria-labelledby="b1">
+            <div>
+              <p>Drones de pulverización, mapeo y monitoreo de cultivos. Tecnología para producir más y mejor, con asesoramiento en la elección del equipo.</p>
+              <a class="row__link" href="#contacto" data-topic="Drones para el campo">Cotizar drones</a>
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <h3 class="row__title">
+            <button class="row__btn" aria-expanded="false" aria-controls="p2" id="b2">
+              <span>Maquinaria pesada</span><i aria-hidden="true"></i>
+            </button>
+          </h3>
+          <div class="row__panel" id="p2" role="region" aria-labelledby="b2">
+            <div>
+              <p>Equipos para empresas de construcción, industria y agro. Nos ocupamos de la compra, el traslado y la documentación hasta que la máquina llega a destino.</p>
+              <a class="row__link" href="#contacto" data-topic="Maquinaria pesada">Cotizar maquinaria</a>
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <h3 class="row__title">
+            <button class="row__btn" aria-expanded="false" aria-controls="p3" id="b3">
+              <span>Insumos en general</span><i aria-hidden="true"></i>
+            </button>
+          </h3>
+          <div class="row__panel" id="p3" role="region" aria-labelledby="b3">
+            <div>
+              <p>Repuestos, materiales y suministros para tu actividad, en el volumen que necesites y con precios competitivos.</p>
+              <a class="row__link" href="#contacto" data-topic="Insumos en general">Cotizar insumos</a>
+            </div>
+          </div>
+        </li>
+        <li class="row">
+          <h3 class="row__title">
+            <button class="row__btn" aria-expanded="false" aria-controls="p4" id="b4">
+              <span>Otros productos</span><i aria-hidden="true"></i>
+            </button>
+          </h3>
+          <div class="row__panel" id="p4" role="region" aria-labelledby="b4">
+            <div>
+              <p>Si no figura en la lista, probablemente también lo podamos traer. Contanos qué buscás y lo cotizamos.</p>
+              <a class="row__link" href="#contacto" data-topic="Otro producto">Consultar un producto</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- BANDA PARALLAX -->
+  <section class="band" id="ventajas">
+    <div class="band__media" aria-hidden="true">
+      <img class="band__img" data-speed="0.18" src="assets/images/puerto.jpg" alt="" loading="lazy">
+      <div class="band__scrim"></div>
+    </div>
+    <div class="wrap band__content">
+      <h2 class="band__title">Importar bien es una cuestión de precio, de confianza y de tiempo.</h2>
+      <div class="pillars">
+        <article class="pillar">
+          <h3>Al mejor precio</h3>
+          <p>Comparamos proveedores y negociamos por vos para que cada compra salga al menor costo posible.</p>
+        </article>
+        <article class="pillar">
+          <h3>Atención personalizada</h3>
+          <p>Una persona a cargo de tu operación, desde la primera consulta hasta la entrega.</p>
+        </article>
+        <article class="pillar">
+          <h3>Importación sin vueltas</h3>
+          <p>Nos ocupamos de la logística y los trámites para que vos te concentres en tu negocio.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="section section--mist" id="proceso">
+    <div class="wrap">
+      <h2 class="h2 h2--narrow">Cómo trabajamos, en cuatro pasos.</h2>
+
+      <ol class="steps" id="steps">
+        <li class="step">
+          <h3>Nos contás qué necesitás</h3>
+          <p>Escuchamos tu necesidad, el presupuesto y los plazos que manejás.</p>
+        </li>
+        <li class="step">
+          <h3>Buscamos y cotizamos</h3>
+          <p>Relevamos proveedores y te presentamos opciones claras, con costos finales.</p>
+        </li>
+        <li class="step">
+          <h3>Gestionamos la importación</h3>
+          <p>Coordinamos compra, transporte y documentación de principio a fin.</p>
+        </li>
+        <li class="step">
+          <h3>Recibís en destino</h3>
+          <p>Tu mercadería llega a donde la necesitás y seguimos disponibles ante cualquier duda.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="section section--dark" id="nosotros">
+    <div class="wrap about">
+      <h2 class="h2">Importar no tiene por qué ser complicado.</h2>
+      <div class="about__text">
+        <p>RS Consultora es una consultora especializada en importaciones para Argentina. Acompañamos a productores y empresas en cada compra al exterior, con una atención directa y a medida.</p>
+        <p>Trabajamos desde Crespo, Entre Ríos, y atendemos pedidos de todo el país.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section section--light" id="contacto">
+    <div class="wrap">
+      <h2 class="h2 h2--narrow">Mandanos tu consulta o contanos qué querés importar.</h2>
+      <div class="contact">
+        <div class="contact__info">
+          <dl>
+            <dt>Teléfono y WhatsApp</dt>
+            <dd><a href="https://wa.me/5493436116645" target="_blank" rel="noopener">+54 (9) 3436 11 6645</a></dd>
+            <dt>Email</dt>
+            <dd><a href="mailto:rsconsultora.gestion@gmail.com">rsconsultora.gestion@gmail.com</a></dd>
+            <dt>Ubicación</dt>
+            <dd>Crespo, Entre Ríos, Argentina</dd>
+          </dl>
+
+          <form class="form" id="form" novalidate>
+            <label>
+              <span>Nombre</span>
+              <input type="text" name="nombre" autocomplete="name" required>
+            </label>
+            <label>
+              <span>Tu mensaje</span>
+              <textarea name="respuesta" rows="3"></textarea>
+            </label>
+            <button type="submit" class="btn btn--dark">Enviar por email</button>
+            <p class="form__note" id="formNote" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="contact__map">
+          <iframe title="Mapa de Crespo, Entre Ríos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d108243.89173377138!2d-60.39139803785118!3d-32.02536186026134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95b42490ae877c29%3A0x322d7ee5cd4d040a!2sCrespo%2C%20Entre%20R%C3%ADos!5e0!3m2!1ses-419!2sar!4v1792696451757!5m2!1ses-419!2sar"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <a class="brand" href="#inicio" aria-label="RS Consultora, volver arriba">
+      <img class="brand__logo" src="assets/images/logo-claro.png" alt="" width="45" height="52">
+      <span class="brand__name">RS Consultora</span>
+    </a>
+    <p class="footer__copy">© 2026 RS Consultora. Todos los derechos reservados.</p>
+    <div class="social">
+      <!-- Reemplazá los "#" por tus perfiles reales -->
+      <a href="https://www.instagram.com/rs.consultora?psln=NXJqYjN1eGZ4MnZh" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></svg></a>
+      <a href="https://www.facebook.com/profile.php?id=61595702254246" aria-label="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
+      <a href="mailto:rsconsultora.gestion@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
